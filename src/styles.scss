@@ -1,1 +1,14 @@
-/* You can add global styles to this file, and also import other style files */
+@import "sky-sun";
+
+body {
+  margin: 0;
+  background-color: #fdfdfd;
+}
+
+mat-radio-button {
+  margin-bottom: 5px;
+}
+
+.mat-h1 {
+  margin-top: 15px;
+}
