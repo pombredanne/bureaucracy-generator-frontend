@@ -1,0 +1,20 @@
+@import "~@angular/material/theming";
+
+@include mat-core();
+
+$sky-sun-primary: mat-palette($mat-gray, 900);
+$sky-sun-accent: mat-palette($mat-yellow, 300);
+$sky-sun-warn: mat-palette($mat-red);
+
+$sky-sun-theme: mat-light-theme($sky-sun-primary, $sky-sun-accent, $sky-sun-warn);
+
+$dark-primary: mat-palette($mat-blue-grey);
+$dark-accent:  mat-palette($mat-deep-orange, A200, A100, A400);
+$dark-warn:    mat-palette($mat-red);
+$dark-theme:   mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
+
+@include angular-material-theme($sky-sun-theme);
+
+.sky-sun-dark-theme {
+  @include angular-material-theme($dark-theme);
+}

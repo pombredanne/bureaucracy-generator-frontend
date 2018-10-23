@@ -1,0 +1,10 @@
+<mat-toolbar color="primary">
+  <a routerLink="/">{{title}}</a>
+
+  <!-- This fills the remaining space of the current row -->
+  <span class="fill-remaining-space"></span>
+  <a href="https://github.com/bureaucracy-generator" id="github-link" target="_blank">
+    <fa-icon [icon]="['fab', 'github']" size="2x" id="github-logo"></fa-icon>
+  </a>
+</mat-toolbar>
+<router-outlet></router-outlet>
