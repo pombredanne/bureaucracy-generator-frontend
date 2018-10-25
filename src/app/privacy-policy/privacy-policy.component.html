@@ -1,23 +1,23 @@
-<mat-horizontal-stepper [linear]="true">
+<mat-horizontal-stepper [linear]="false">
   <mat-step [stepControl]="platformsFormGroup">
     <form [formGroup]="platformsFormGroup">
       <ng-template matStepLabel i18n>Platforms</ng-template>
       <mat-label>Choose on which platforms your app runs:</mat-label><br>
-        <mat-checkbox formControlName="requiredCtrl" [(ngModel)]="website" name="website">Website</mat-checkbox><br>
-        <mat-checkbox formControlName="requiredCtrl" [(ngModel)]="mobileApp" name="mobileApp">Mobile app</mat-checkbox>
+        <mat-checkbox formControlName="requiredCtrl" [(ngModel)]="website" name="website" (change)="platformWebsiteChanged()">Website</mat-checkbox><br>
+        <mat-checkbox formControlName="requiredCtrl" [(ngModel)]="mobileApp" name="mobileApp" (change)="platformMobileChanged()">Mobile app</mat-checkbox>
       <div>
-        <button class="stepper-button" mat-raised-button color="accent" matStepperNext>Next</button>
+        <button class="stepper-button" mat-raised-button color="accent" matStepperNext [disabled]="!platformsFormGroup.valid">Next</button>
       </div>
     </form>
   </mat-step>
   <mat-step [stepControl]="entityFormGroup">
     <form [formGroup]="entityFormGroup">
       <ng-template matStepLabel>Business information</ng-template>
-      <mat-radio-group name="entityType" [(ngModel)]="entityType" formControlName="requiredSelectedCtrl">
+      <mat-radio-group name="entityType" [(ngModel)]="entityType" formControlName="requiredSelectedCtrl" (change)="entityTypeChanged()">
         <mat-radio-button name="individual" value="individual">Individual</mat-radio-button><br>
         <mat-radio-button name="business" value="business">Business</mat-radio-button>
       </mat-radio-group>
-      <div *ngIf="entityType === 'business'">
+      <div *ngIf="entityType === entityTypes.business">
         <mat-form-field appearance="outline">
           <mat-label i18n>Your business name</mat-label>
           <input type="text" aria-label="Number" [(ngModel)]="businessName" matInput placeholder="My Awesome Company" required formControlName="requiredCtrl">
@@ -25,7 +25,7 @@
       </div>
       <div>
         <button class="stepper-button" mat-raised-button color="primary" matStepperPrevious>Back</button>
-        <button class="stepper-button" mat-raised-button color="accent" matStepperNext>Next</button>
+        <button class="stepper-button" mat-raised-button color="accent" matStepperNext [disabled]="!entityFormGroup.valid">Next</button>
       </div>
     </form>
   </mat-step>
@@ -44,28 +44,30 @@
       </mat-form-field>
       <div>
         <button class="stepper-button" mat-raised-button color="primary" matStepperPrevious>Back</button>
-        <button class="stepper-button" mat-raised-button color="accent" matStepperNext>Next</button>
+        <button class="stepper-button" mat-raised-button color="accent" matStepperNext [disabled]="!locationFormGroup.valid">Next</button>
       </div>
     </form>
   </mat-step>
   <mat-step [stepControl]="basicInformationFormGroup">
     <form [formGroup]="basicInformationFormGroup">
       <ng-template matStepLabel>Basic information</ng-template>
-      <mat-form-field appearance="outline" *ngIf="website">
-        <mat-label i18n>Your website URL</mat-label>
-        <input type="text" aria-label="Number" [(ngModel)]="websiteURL" matInput placeholder="https://something-interesting.com" required formControlName="urlCtrl">
-      </mat-form-field><br>
-      <mat-form-field appearance="outline" *ngIf="website">
-        <mat-label i18n>Your website name</mat-label>
-        <input type="text" aria-label="Number" [(ngModel)]="websiteName" matInput placeholder="Something Interesting" required formControlName="requiredCtrl">
-      </mat-form-field><br>
+      <div *ngIf="website">
+        <mat-form-field appearance="outline">
+          <mat-label i18n>Your website URL</mat-label>
+          <input type="text" aria-label="Number" [(ngModel)]="websiteURL" matInput placeholder="https://something-interesting.com" required formControlName="urlCtrl">
+        </mat-form-field><br>
+        <mat-form-field appearance="outline">
+          <mat-label i18n>Your website name</mat-label>
+          <input type="text" aria-label="Number" [(ngModel)]="websiteName" matInput placeholder="Something Interesting" required formControlName="websiteNameCtrl">
+        </mat-form-field><br>
+      </div>
       <mat-form-field appearance="outline" *ngIf="mobileApp">
         <mat-label i18n>Your mobile app name</mat-label>
-        <input type="text" aria-label="Number" [(ngModel)]="mobileAppName" matInput placeholder="Something Interesting" required formControlName="requiredCtrl">
+        <input type="text" aria-label="Number" [(ngModel)]="mobileAppName" matInput placeholder="Something Interesting" required formControlName="appNameCtrl">
       </mat-form-field>
       <div>
         <button class="stepper-button" mat-raised-button color="primary" matStepperPrevious>Back</button>
-        <button class="stepper-button" mat-raised-button color="accent" matStepperNext>Next</button>
+        <button class="stepper-button" mat-raised-button color="accent" matStepperNext [disabled]="!basicInformationFormGroup.valid">Next</button>
       </div>
     </form>
   </mat-step>
@@ -83,13 +85,13 @@
         <mat-radio-button name="no" value="false">No</mat-radio-button>
       </mat-radio-group>
       <h1 class="mat-h1">Do you use analytics services for your app/website? (Google Analytics, ...)</h1>
-      <mat-radio-group name="entityType" [(ngModel)]="useAnalytics" formControlName="requiredCtrl">
+      <mat-radio-group name="useAnalytics" [(ngModel)]="useAnalytics" formControlName="requiredCtrl">
         <mat-radio-button name="yes" value="true">Yes</mat-radio-button><br>
         <mat-radio-button name="no" value="false">No</mat-radio-button>
       </mat-radio-group>
       <div>
         <button class="stepper-button" mat-raised-button color="primary" matStepperPrevious>Back</button>
-        <button class="stepper-button" mat-raised-button color="accent" matStepperNext>Next</button>
+        <button class="stepper-button" mat-raised-button color="accent" matStepperNext [disabled]="!collectedDataFormGroup.valid">Next</button>
       </div>
     </form>
   </mat-step>
@@ -100,27 +102,27 @@
       <div *ngIf="canContactByEmail">
         <mat-form-field appearance="outline">
           <mat-label i18n>Email</mat-label>
-          <input type="text" aria-label="Number" [(ngModel)]="contactEmail" matInput placeholder="privacy@mysite.com" required formControlName="emailCtrl">
+          <input type="text" aria-label="Number" [(ngModel)]="contactEmail" matInput placeholder="privacy@mysite.com" required formControlName="emailCtrl" (change)="contactEmailChanged()">
         </mat-form-field>
       </div>
       <mat-checkbox formControlName="requiredSelectedCtrl" [(ngModel)]="canContactByPhone" name="contactByPhone">By phone</mat-checkbox><br>
       <div *ngIf="canContactByPhone">
         <mat-form-field appearance="outline">
           <mat-label i18n>Phone number</mat-label>
-          <input type="text" aria-label="Number" [(ngModel)]="contactPhone" matInput placeholder="(541) 754-3010" required formControlName="phoneCtrl">
+          <input type="text" aria-label="Number" [(ngModel)]="contactPhone" matInput placeholder="(541) 754-3010" required formControlName="phoneCtrl" (change)="contactPhoneChanged()">
         </mat-form-field>
       </div>
       <mat-checkbox formControlName="requiredSelectedCtrl" [(ngModel)]="canContactByWebsite" name="contactByWebsite">By a page on your website</mat-checkbox><br>
       <div *ngIf="canContactByWebsite">
         <mat-form-field appearance="outline">
           <mat-label i18n>Page URL</mat-label>
-          <input type="text" aria-label="Number" [(ngModel)]="contactWebsite" matInput placeholder="https://mywebsite.com" required formControlName="urlCtrl">
+          <input type="text" aria-label="Number" [(ngModel)]="contactWebsite" matInput placeholder="https://mywebsite.com" required formControlName="urlCtrl" (change)="contactWebsiteChanged()">
         </mat-form-field>
       </div>
       <mat-hint>How can users contact you with questions about your Privacy Policy?</mat-hint>
       <div>
         <button class="stepper-button" mat-raised-button color="primary" matStepperPrevious>Back</button>
-        <button class="stepper-button" mat-raised-button color="accent" matStepperNext>Next</button>
+        <button class="stepper-button" mat-raised-button color="accent" matStepperNext [disabled]="!contactFormGroup.valid">Next</button>
       </div>
     </form>
   </mat-step>

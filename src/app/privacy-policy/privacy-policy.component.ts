@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Utils} from '../utils';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
@@ -12,6 +12,10 @@ import {map, startWith} from 'rxjs/operators';
 export class PrivacyPolicyComponent implements OnInit {
   countries: string[];
   filteredCountries: Observable<String[]>;
+  entityTypes = {
+    'individual': 'individual',
+    'business': 'business'
+  };
 
   platformsFormGroup: FormGroup;
   entityFormGroup: FormGroup;
@@ -63,7 +67,8 @@ export class PrivacyPolicyComponent implements OnInit {
       requiredCtrl: ['', Validators.required],
     });
     this.basicInformationFormGroup = this.formBuilder.group( {
-      requiredCtrl: ['', Validators.required],
+      websiteNameCtrl: ['', Validators.required],
+      appNameCtrl: ['', Validators.required],
       urlCtrl: ['', Validators.pattern(this.urlRegex)]
     });
     this.collectedDataFormGroup = this.formBuilder.group( {
@@ -82,10 +87,16 @@ export class PrivacyPolicyComponent implements OnInit {
         startWith(''),
         map(value => this.filter(value))
       );
+
+    this.entityFormGroup.controls['requiredCtrl'].disable();
+
+    this.basicInformationFormGroup.controls['websiteNameCtrl'].disable();
+    this.basicInformationFormGroup.controls['appNameCtrl'].disable();
+    this.basicInformationFormGroup.controls['urlCtrl'].disable();
   }
 
   setDefaultEntityType() {
-    this.entityType = 'individual';
+    this.entityType = this.entityTypes.individual;
   }
 
   private filter(value: string): string[] {
@@ -95,6 +106,58 @@ export class PrivacyPolicyComponent implements OnInit {
     }
 
     return this.countries.filter(option => option.toLowerCase().includes(filterValue));
+  }
+
+
+
+  entityTypeChanged() {
+    if (this.entityType === this.entityTypes.business) {
+      this.entityFormGroup.controls['requiredCtrl'].enable();
+    } else {
+      this.entityFormGroup.controls['requiredCtrl'].disable();
+    }
+  }
+
+  platformWebsiteChanged() {
+    if (this.website) {
+      this.basicInformationFormGroup.controls['websiteNameCtrl'].enable();
+      this.basicInformationFormGroup.controls['urlCtrl'].enable();
+    } else {
+      this.basicInformationFormGroup.controls['websiteNameCtrl'].disable();
+      this.basicInformationFormGroup.controls['urlCtrl'].disable();
+    }
+  }
+
+  platformMobileChanged() {
+    if (this.mobileApp) {
+      this.basicInformationFormGroup.controls['appNameCtrl'].enable();
+    } else {
+      this.basicInformationFormGroup.controls['appNameCtrl'].disable();
+    }
+  }
+
+  contactEmailChanged() {
+    if (this.canContactByEmail) {
+      this.contactFormGroup.controls['emailCtrl'].enable();
+    } else {
+      this.contactFormGroup.controls['emailCtrl'].disable();
+    }
+  }
+
+  contactPhoneChanged() {
+    if (this.canContactByPhone) {
+      this.contactFormGroup.controls['phoneCtrl'].enable();
+    } else {
+      this.contactFormGroup.controls['phoneCtrl'].disable();
+    }
+  }
+
+  contactWebsiteChanged() {
+    if (this.canContactByWebsite) {
+      this.contactFormGroup.controls['urlCtrl'].enable();
+    } else {
+      this.contactFormGroup.controls['urlCtrl'].disable();
+    }
   }
 }
 
