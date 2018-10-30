@@ -1,8 +1,7 @@
 # Bureaucracy Generator - frontend
 Frontend for the Bureaucracy Generator.
 ## What is Bureaucracy Generator?
-Bureaucracy Generator is an **opensource** app, which can generate all the legal documents you need to run your bussines - 
-privacy policy, terms and conditions, GDPR, etc.
+Bureaucracy Generator is an open-source app, which can generate all the legal documents you need to run your business - privacy policy, terms and conditions, GDPR, etc.
 ## Is it for free?
 **Yes!** This project is open source and the application is completly free to use. 
 ## Can I help with the project?
