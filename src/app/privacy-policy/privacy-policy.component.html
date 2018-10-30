@@ -1,4 +1,4 @@
-<mat-horizontal-stepper [linear]="false">
+<mat-horizontal-stepper [linear]="true">
   <mat-step [stepControl]="platformsFormGroup">
     <form [formGroup]="platformsFormGroup">
       <ng-template matStepLabel i18n>Platforms</ng-template>
@@ -14,10 +14,10 @@
     <form [formGroup]="entityFormGroup">
       <ng-template matStepLabel>Business information</ng-template>
       <mat-radio-group name="entityType" [(ngModel)]="entityType" formControlName="requiredSelectedCtrl" (change)="entityTypeChanged()">
-        <mat-radio-button name="individual" value="individual">Individual</mat-radio-button><br>
-        <mat-radio-button name="business" value="business">Business</mat-radio-button>
+        <mat-radio-button name="individual" value="0">Individual</mat-radio-button><br>
+        <mat-radio-button name="business" value="1">Business</mat-radio-button>
       </mat-radio-group>
-      <div *ngIf="entityType === entityTypes.business">
+      <div *ngIf="entityType === '1'">
         <mat-form-field appearance="outline">
           <mat-label i18n>Your business name</mat-label>
           <input type="text" aria-label="Number" [(ngModel)]="businessName" matInput placeholder="My Awesome Company" required formControlName="requiredCtrl">
@@ -127,8 +127,15 @@
     </form>
   </mat-step>
   <mat-step>
-  <ng-template matStepLabel>Done</ng-template>
-    <span>Everything set up! Now let's just generate your document now.</span>
-    <button mat-raised-button>Generate</button>
+  <ng-template matStepLabel>Generate</ng-template>
+    <span>Everything set up! Now let's just generate your document now.</span><br><br>
+    <button mat-raised-button (click)="generateDocument()" color="accent">Generate</button>
+    <br><br>
+    <div *ngIf="response != null" id="generated-document-container">
+      <div id="generated-document-header"><h2 id="generated-document-header-text">Our privacy policy</h2></div>
+      <mat-card id="generated-document-card">
+        <div [innerHTML]="response"></div>
+      </mat-card>
+    </div>
 </mat-step>
 </mat-horizontal-stepper>

@@ -5,7 +5,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {
   MatAutocompleteModule,
-  MatButtonModule, MatCheckboxModule,
+  MatButtonModule, MatCardModule, MatCheckboxModule,
   MatFormFieldModule,
   MatIconModule,
   MatInputModule,
@@ -49,7 +49,8 @@ library.add(faGithub);
     MatCheckboxModule,
     MatRadioModule,
     MatAutocompleteModule,
-    HttpClientModule
+    HttpClientModule,
+    MatCardModule
   ],
   providers: [HttpClientModule],
   bootstrap: [AppComponent]

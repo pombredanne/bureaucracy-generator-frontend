@@ -3,6 +3,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Utils} from '../utils';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
+import {DocumentService} from '../document.service';
 
 @Component({
   selector: 'app-privacy-policy',
@@ -12,10 +13,6 @@ import {map, startWith} from 'rxjs/operators';
 export class PrivacyPolicyComponent implements OnInit {
   countries: string[];
   filteredCountries: Observable<String[]>;
-  entityTypes = {
-    'individual': 'individual',
-    'business': 'business'
-  };
 
   platformsFormGroup: FormGroup;
   entityFormGroup: FormGroup;
@@ -49,9 +46,11 @@ export class PrivacyPolicyComponent implements OnInit {
   contactPhone: string;
   contactWebsite: string;
 
+  response: string;
+
   urlRegex = '^(?:http(s)?:\\/\\/)?[\\w.-]+(?:\\.[\\w\\.-]+)+[\\w\\-\\._~:/?#[\\]@!\\$&\'\\(\\)\\*\\+,;=.]+$';
   phoneRegex = '^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]*$';
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder, private documentService: DocumentService) { }
 
   ngOnInit() {
     this.countries = Utils.getCountries();
@@ -96,7 +95,7 @@ export class PrivacyPolicyComponent implements OnInit {
   }
 
   setDefaultEntityType() {
-    this.entityType = this.entityTypes.individual;
+    this.entityType = '0';
   }
 
   private filter(value: string): string[] {
@@ -111,7 +110,7 @@ export class PrivacyPolicyComponent implements OnInit {
 
 
   entityTypeChanged() {
-    if (this.entityType === this.entityTypes.business) {
+    if (this.entityType === '1') {
       this.entityFormGroup.controls['requiredCtrl'].enable();
     } else {
       this.entityFormGroup.controls['requiredCtrl'].disable();
@@ -158,6 +157,18 @@ export class PrivacyPolicyComponent implements OnInit {
     } else {
       this.contactFormGroup.controls['urlCtrl'].disable();
     }
+  }
+
+  generateDocument() {
+    this.documentService.getPrivacyPolicyDocument(
+      this.website, this.mobileApp, this.entityType, this.businessName, this.businessLocation, this.websiteURL, this.websiteName,
+      this.mobileAppName, this.collectEmail, this.collectFirstAndLastName, this.collectPhoneNumber, this.collectAddress,
+      this.askForUserLocation, this.useAnalytics, this.canContactByEmail, this.canContactByPhone, this.canContactByWebsite,
+      this.contactEmail, this.contactPhone, this.contactWebsite
+    ).subscribe(res => {
+      const data = JSON.parse(res['body'].toString());
+      this.response = data['content'];
+    });
   }
 }
 

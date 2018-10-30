@@ -1,5 +1,5 @@
 export class Utils {
-  static baseBackendUrl = 'localhost:8080';
+  static baseBackendUrl = 'http://bg.local/api';
   public static getCountries() {
     return ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Anguilla', 'Antigua &amp; Barbuda',
       'Argentina', 'Armenia', 'Aruba', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh',
