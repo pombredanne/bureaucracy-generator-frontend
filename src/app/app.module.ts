@@ -5,7 +5,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {
   MatAutocompleteModule,
-  MatButtonModule, MatCheckboxModule,
+  MatButtonModule, MatCardModule, MatCheckboxModule,
   MatFormFieldModule,
   MatIconModule,
   MatInputModule,
@@ -20,6 +20,7 @@ import { HomeComponent } from './home/home.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {HttpClientModule} from '@angular/common/http';
 
 library.add(faGithub);
 
@@ -47,9 +48,11 @@ library.add(faGithub);
     ReactiveFormsModule,
     MatCheckboxModule,
     MatRadioModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    HttpClientModule,
+    MatCardModule
   ],
-  providers: [],
+  providers: [HttpClientModule],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

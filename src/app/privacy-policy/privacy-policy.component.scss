@@ -1,4 +1,33 @@
+@import "~@angular/material/theming";
+@import "~src/sky-sun";
 .stepper-button {
   margin-top: 15px;
   margin-right: 15px;
+}
+
+#generated-document-container {
+  text-align: center;
+  @media screen and (max-width: 360px) {
+    width: 100%;
+  }
+
+  @media screen and (min-width: 1280px) {
+    width: 45%;
+    margin: 0 auto;
+  }
+}
+
+#generated-document-header {
+  background-color: mat-color($sky-sun-primary);
+  color: white;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 4px 4px 0 0;
+  height: 60px;
+  line-height: 60px;
+}
+
+#generated-document-header-text {
+  margin-left: 15px;
+  border-radius: 0 0 4px 4px;
 }
